@@ -1,0 +1,40 @@
+Notes on the circle_gif module
+---
+
+To install, compile nginx with this ./configure option:
+
+    --add-module=path/to/this/directory
+
+You must have the ImageMagick development headers for it to work.
+
+The circle_gif module generates simple circle images with the colors and size
+specified in the URL. The images are served quickly, much faster than if they
+had been read from disk. The module was made to help web designers change the
+colors of their "round corners" without having to fire up PhotoShop.
+
+To enable the circles, add a "circle_gif;" directive to the location where you
+want them. My nginx.conf has this:
+
+    location /circles {
+        circle_gif;
+    }
+
+After that, the circles will be accessible like this:
+
+    /circles/<background color>/<foreground color>/<size>.gif
+
+Background and foreground color are 24-bit hex colors, e.g. "ffffff" is white
+and "000000" is black. Size is the radius of the circle in pixels. This
+generates a black on white circle of radius 20:
+
+    /circles/ffffff/000000/20.gif
+
+By default, only even-numbered radii between 10 and 20 are allowed. To change
+this, you can use the directives "circle_min_radius" (default 10),
+"circle_max_radius" (default 20), and "circle_step_radius" (default 2).
+Note that an image for each radius is created at server startup and kept
+in memory, so adding more circle sizes will slow server startup and use (a
+very small amount of) RAM.
+
+--Evan Miller
+emmiller@gmail.com

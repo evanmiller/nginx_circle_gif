@@ -8,11 +8,29 @@ ngx_feature_test="MagickWandGenesis()"
 . auto/feature
 
 if [ $ngx_found = yes ]; then
+
     ngx_addon_name=ngx_http_circle_gif_module
-    HTTP_MODULES="$HTTP_MODULES ngx_http_circle_gif_module"
-    NGX_ADDON_SRCS="$NGX_ADDON_SRCS $ngx_addon_dir/ngx_http_circle_gif_module.c"
+
+    if test -n "$ngx_module_link"; then
+
+        ngx_module_type=HTTP
+        ngx_module_name=ngx_http_circle_gif_module
+        ngx_module_incs=
+        ngx_module_deps=
+        ngx_module_srcs=$ngx_addon_dir/ngx_http_circle_gif_module.c
+        ngx_module_libs=-lMagickWand
+        . auto/module
+
+    else
+
+        HTTP_MODULES="$HTTP_MODULES ngx_http_circle_gif_module"
+        NGX_ADDON_SRCS="$NGX_ADDON_SRCS $ngx_addon_dir/ngx_http_circle_gif_module.c"
+
+    fi
+
     CORE_LIBS="$CORE_LIBS -lMagickWand"
     CFLAGS="$CFLAGS `MagickWand-config --cflags`"
+
 else
     cat << END
 $0: error: the Circle GIF addon requires the ImageMagick library.

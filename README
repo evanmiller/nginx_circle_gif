@@ -5,6 +5,10 @@ To install, compile nginx with this ./configure option:
 
     --add-module=path/to/this/directory
 
+To build the module dynamically, use this ./configure option:
+
+    --add-dynamic-module=path/to/this/directory
+
 You must have the ImageMagick development headers for it to work.
 
 The circle_gif module generates simple circle images with the colors and size
